@@ -36,6 +36,7 @@ from api.workers.llm_client import (
     PermanentLLMError,
     TransientLLMError,
     get_analyzer,
+    is_presentable,
 )
 
 logger = logging.getLogger(__name__)
@@ -200,7 +201,13 @@ def _merge(batch_id: str, poll_id: str, output: AnalysisOutput, maps: dict) -> i
             db.rollback()  # already merged by a duplicate run, or cancelled
             return None
         version = PollRepository.bump_insights_version(db, pid)
-        for item in output.insights:
+        kept = [item for item in output.insights if is_presentable(item)]
+        if len(kept) < len(output.insights):
+            logger.warning(
+                "Dropped %d insight(s) from batch %s that failed output checks",
+                len(output.insights) - len(kept), batch_id,
+            )
+        for item in kept:
             question_id = maps["questions"].get(item.question_ref or "")
             option_id = maps["options"].get(item.option_ref or "")
             if option_id and question_id and maps["option_question"].get(item.option_ref) != question_id:

@@ -67,7 +67,12 @@ class Settings(BaseSettings):
     # Empty means "the provider's default": claude-opus-5-5 (anthropic) or openai/gpt-oss-120b (groq).
     LLM_MODEL: str = ""
     LLM_EFFORT: str = "low"
-    LLM_MAX_TOKENS: int = 16000
+    # A batch of 50 messages needs ~1.5k output tokens; the rest is headroom for reasoning
+    # tokens (counted against this cap). Low enough that no call can produce a long essay.
+    LLM_MAX_TOKENS: int = 4096
+    # Teacher-facing insight text. Longer output is dropped, not truncated (see llm_client.is_presentable).
+    INSIGHT_SUMMARY_MAX_CHARS: int = 300
+    INSIGHT_LABEL_MAX_CHARS: int = 80
 
     # --- Polls ---
     POLL_MIN_TIME_LIMIT_SECONDS: int = 10
