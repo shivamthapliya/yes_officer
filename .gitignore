@@ -9,3 +9,4 @@ dist/
 celerybeat-schedule*
 .impeccable/hook.cache.json
 frontend/.impeccable/hook.cache.json
+dev-test-accounts.local.txt

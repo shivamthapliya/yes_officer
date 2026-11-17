@@ -2,6 +2,7 @@ import { Check, Trophy, Users } from 'lucide-react'
 
 import { formatTime, pluralize } from '../lib/format'
 import { OptionRow } from './QuestionCard'
+import { RuledLine } from './RuledLine'
 
 /** Verified per-question results: distribution, correct option, first correct student. */
 export function ResultsBoard({ results, myAnswers = null }) {
@@ -56,19 +57,19 @@ export function ResultsBoard({ results, myAnswers = null }) {
               )
             })}
           </div>
-          {q.first_correct_student ? (
-            <p style={{ marginTop: 'var(--s-4)', display: 'flex', alignItems: 'center', gap: 8, fontSize: 'var(--t-sm)' }}>
-              <Trophy size={18} aria-hidden="true" color="var(--warn)" />
-              <span>
-                First correct: <strong>{q.first_correct_student.full_name}</strong>{' '}
-                <span className="meta">at {formatTime(q.first_correct_student.received_at)}</span>
-              </span>
-            </p>
-          ) : (
-            <p className="muted" style={{ marginTop: 'var(--s-4)', fontSize: 'var(--t-sm)' }}>
-              No one picked the correct answer.
-            </p>
-          )}
+          <RuledLine style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
+            {q.first_correct_student ? (
+              <>
+                <Trophy size={18} aria-hidden="true" color="var(--warn)" style={{ alignSelf: 'center' }} />
+                <span>
+                  First correct: <strong>{q.first_correct_student.full_name}</strong>{' '}
+                  <span className="meta">at {formatTime(q.first_correct_student.received_at)}</span>
+                </span>
+              </>
+            ) : (
+              <span className="muted">No one picked the correct answer.</span>
+            )}
+          </RuledLine>
         </section>
       ))}
     </div>

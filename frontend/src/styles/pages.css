@@ -425,8 +425,8 @@
   align-items: center;
   flex-wrap: wrap;
   gap: var(--s-3);
-  margin-top: var(--s-5);
-  min-height: 44px;
+  /* margin-top is set at runtime so the hint text lands on a ruled line */
+  min-height: var(--pitch);
 }
 
 .waiting-card {

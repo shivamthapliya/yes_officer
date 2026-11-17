@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom'
 import { historyApi } from '../../api/services'
 import { ErrorAlert, LoadingBlock } from '../../components/common'
 import { OptionRow } from '../../components/QuestionCard'
+import { RuledLine } from '../../components/RuledLine'
 import { formatDateTime, formatTime } from '../../lib/format'
 import { BackLink } from '../../components/BackLink'
 
@@ -69,11 +70,11 @@ export function ReviewPage() {
                 )
               })}
             </div>
-            <p className="muted" style={{ marginTop: 'var(--s-4)', fontSize: 'var(--t-sm)' }}>
+            <RuledLine className="muted">
               {q.selected_option_id
                 ? `You answered at ${formatTime(q.answered_at)}${q.is_correct ? ' and got it right.' : '.'}`
                 : 'You didn’t answer this question.'}
-            </p>
+            </RuledLine>
           </section>
         ))}
       </div>

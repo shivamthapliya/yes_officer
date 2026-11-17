@@ -5,15 +5,43 @@ import { authApi } from '../api/services'
 
 const AuthContext = createContext(null)
 
+// The session cookie is HttpOnly (and lives on the API's domain), so the page can't
+// see it. This hint remembers that a sign-in happened, so signed-out visitors don't
+// fire a /auth/me request that is certain to 401 (and log a console error).
+const SESSION_HINT = 'yo.hasSession'
+const hint = {
+  get: () => {
+    try {
+      return localStorage.getItem(SESSION_HINT) === '1'
+    } catch {
+      return true // storage blocked: fall back to asking the server
+    }
+  },
+  set: (on) => {
+    try {
+      if (on) localStorage.setItem(SESSION_HINT, '1')
+      else localStorage.removeItem(SESSION_HINT)
+    } catch {
+      /* storage unavailable */
+    }
+  },
+}
+
 export function AuthProvider({ children }) {
-  const [session, setSession] = useState({ status: 'loading', user: null, room: null })
+  const [session, setSession] = useState(() =>
+    hint.get() ? { status: 'loading', user: null, room: null } : { status: 'anonymous', user: null, room: null },
+  )
 
   const apply = useCallback((data) => {
+    hint.set(true)
     setSession({ status: 'authenticated', user: data.user, room: data.room })
     return data
   }, [])
 
-  const signOutLocally = useCallback(() => setSession({ status: 'anonymous', user: null, room: null }), [])
+  const signOutLocally = useCallback(() => {
+    hint.set(false)
+    setSession({ status: 'anonymous', user: null, room: null })
+  }, [])
 
   // Stable identity: consumers list it in effect deps. Unchanged rooms keep the
   // same session object so they don't trigger a re-render (and refetch) loop.
@@ -25,7 +53,7 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     setSessionExpiredHandler(signOutLocally)
-    authApi.me().then(apply).catch(signOutLocally)
+    if (hint.get()) authApi.me().then(apply).catch(signOutLocally)
   }, [apply, signOutLocally])
 
   const value = useMemo(

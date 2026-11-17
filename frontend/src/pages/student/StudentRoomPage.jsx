@@ -6,6 +6,7 @@ import { answersApi, roomsApi } from '../../api/services'
 import { ChatPanel } from '../../components/ChatPanel'
 import { EmptyState, ErrorAlert, LoadingBlock } from '../../components/common'
 import { OptionRow, QuestionCard } from '../../components/QuestionCard'
+import { RuledLine } from '../../components/RuledLine'
 import { FirstCorrectToast, ResultsBoard } from '../../components/ResultsBoard'
 import { useAuth } from '../../context/AuthContext'
 import { RoomLiveProvider, useRoomEvent, useRoomLive } from '../../context/RoomLiveContext'
@@ -161,7 +162,7 @@ function LiveRoom({ room }) {
                   )
                 })}
               </div>
-              <div className="answer-foot" aria-live="assertive">
+              <RuledLine as="div" className="answer-foot" aria-live="assertive">
                 {mine?.status === 'accepted' && (
                   <span className="stamp stamp-ok stamp-in">
                     {mine.duplicate ? 'Already answered' : 'Answer accepted'}
@@ -172,7 +173,7 @@ function LiveRoom({ room }) {
                 {mine?.status === 'error' && <span className="stamp stamp-closed">{mine.error}</span>}
                 {!mine && seconds === 0 && <span className="stamp stamp-closed">Time’s up</span>}
                 {!mine && seconds !== 0 && <span className="muted">Tap an answer. Your first answer counts.</span>}
-              </div>
+              </RuledLine>
             </QuestionCard>
           ) : results ? (
             <>
