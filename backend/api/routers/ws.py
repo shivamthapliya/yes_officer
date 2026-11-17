@@ -55,6 +55,14 @@ def _authorize(token: str | None, room_id: str, jwt_service) -> tuple[str, UserR
         return str(user.id), user.role, user.full_name
 
 
+async def _reject(websocket: WebSocket, code: int) -> None:
+    # Closing before accept() fails the HTTP handshake (403), and the browser then only
+    # sees close code 1006 — it can't tell "token expired, refresh" (4401) from
+    # "not allowed, stop" (4403) and would retry forever. Accept, then close with the code.
+    await websocket.accept()
+    await websocket.close(code=code)
+
+
 class _RateLimiter:
     def __init__(self, count: int, window: float):
         self.count, self.window, self.hits = count, window, deque()
@@ -73,7 +81,8 @@ class _RateLimiter:
 async def room_socket(websocket: WebSocket, room_id: str):
     origin = websocket.headers.get("origin")
     if origin and origin not in settings.CORS_ORIGINS:  # cross-site WebSocket hijacking guard
-        await websocket.close(code=CLOSE_FORBIDDEN)
+        logger.warning("ws rejected room=%s: origin %r not in CORS_ORIGINS", room_id, origin)
+        await _reject(websocket, CLOSE_FORBIDDEN)
         return
 
     app = websocket.app
@@ -83,7 +92,11 @@ async def room_socket(websocket: WebSocket, room_id: str):
         _authorize, websocket.cookies.get(settings.ACCESS_COOKIE_NAME), room_id, app.state.jwt_service
     )
     if isinstance(auth, int):
-        await websocket.close(code=auth)
+        logger.info(
+            "ws rejected room=%s: code=%s cookie_present=%s",
+            room_id, auth, settings.ACCESS_COOKIE_NAME in websocket.cookies,
+        )
+        await _reject(websocket, auth)
         return
     user_id, role, full_name = auth
 
