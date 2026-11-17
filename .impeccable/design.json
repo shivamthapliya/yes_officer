@@ -1,0 +1,723 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-17T10:53:58+00:00",
+  "title": "Design System: Yes Officer",
+  "extensions": {
+    "colorMeta": {
+      "cabinet": {
+        "role": "primary",
+        "displayName": "Cabinet Blue",
+        "canonical": "#1f3a5f",
+        "tonalRamp": [
+          "#1a2432",
+          "#2a3f5d",
+          "#365a8b",
+          "#3e74bd",
+          "#6e94c8",
+          "#9db4d3",
+          "#c8d3e3",
+          "#eff2f6"
+        ]
+      },
+      "cabinet-deep": {
+        "role": "primary",
+        "displayName": "Cabinet Deep",
+        "canonical": "#172d4a",
+        "tonalRamp": [
+          "#1a2533",
+          "#29405e",
+          "#355a8d",
+          "#3c75bf",
+          "#6c94c9",
+          "#9cb4d4",
+          "#c7d3e3",
+          "#eff2f6"
+        ]
+      },
+      "cabinet-hi": {
+        "role": "primary",
+        "displayName": "Cabinet Highlight",
+        "canonical": "#2c4f7c",
+        "tonalRamp": [
+          "#1b2531",
+          "#2c405b",
+          "#395c88",
+          "#4276b9",
+          "#7196c5",
+          "#9eb5d2",
+          "#c9d4e2",
+          "#eff2f5"
+        ]
+      },
+      "cabinet-ink": {
+        "role": "neutral",
+        "displayName": "Cabinet Ink",
+        "canonical": "#e3ebf5",
+        "tonalRamp": [
+          "#1b2531",
+          "#2c415b",
+          "#395c88",
+          "#4377b9",
+          "#7196c5",
+          "#9fb5d1",
+          "#c9d4e2",
+          "#eff2f5"
+        ]
+      },
+      "cabinet-ink-2": {
+        "role": "neutral",
+        "displayName": "Cabinet Ink Muted",
+        "canonical": "#b8c8dc",
+        "tonalRamp": [
+          "#1e252e",
+          "#324254",
+          "#445d7d",
+          "#5379a8",
+          "#7d97b9",
+          "#a6b6ca",
+          "#ccd4de",
+          "#f0f2f4"
+        ]
+      },
+      "blotter": {
+        "role": "neutral",
+        "displayName": "Blotter Grey",
+        "canonical": "#e6ebf0",
+        "tonalRamp": [
+          "#20262c",
+          "#374350",
+          "#4c6175",
+          "#5f7e9d",
+          "#859bb1",
+          "#abb8c5",
+          "#cfd5dc",
+          "#f1f2f4"
+        ]
+      },
+      "blotter-2": {
+        "role": "neutral",
+        "displayName": "Blotter Shade",
+        "canonical": "#d9e0e8",
+        "tonalRamp": [
+          "#20262c",
+          "#374350",
+          "#4c5f75",
+          "#5f7c9c",
+          "#8599b1",
+          "#abb7c5",
+          "#cfd5dc",
+          "#f1f2f4"
+        ]
+      },
+      "card": {
+        "role": "neutral",
+        "displayName": "Card Stock",
+        "canonical": "#fcfcfa",
+        "tonalRamp": [
+          "#2c2c20",
+          "#505037",
+          "#75754c",
+          "#9d9d5f",
+          "#b1b185",
+          "#c5c5ab",
+          "#dcdccf",
+          "#f4f4f1"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Paper White",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "#262626",
+          "#434343",
+          "#616161",
+          "#7e7e7e",
+          "#9b9b9b",
+          "#b8b8b8",
+          "#d5d5d5",
+          "#f2f2f2"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Catalog Ink",
+        "canonical": "#14223a",
+        "tonalRamp": [
+          "#1b2332",
+          "#2b3d5c",
+          "#385689",
+          "#416eba",
+          "#708fc6",
+          "#9eb1d2",
+          "#c8d2e2",
+          "#eff1f5"
+        ]
+      },
+      "ink-2": {
+        "role": "neutral",
+        "displayName": "Ink Secondary",
+        "canonical": "#3f4f66",
+        "tonalRamp": [
+          "#21252c",
+          "#38414f",
+          "#4d5d74",
+          "#60789b",
+          "#8697b0",
+          "#abb6c5",
+          "#cfd4db",
+          "#f1f2f4"
+        ]
+      },
+      "ink-3": {
+        "role": "neutral",
+        "displayName": "Ink Tertiary",
+        "canonical": "#56657b",
+        "tonalRamp": [
+          "#22252a",
+          "#3b424c",
+          "#525e6f",
+          "#687a94",
+          "#8b98aa",
+          "#aeb6c1",
+          "#d0d4da",
+          "#f1f2f3"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Line",
+        "canonical": "#c9d3de",
+        "tonalRamp": [
+          "#21262c",
+          "#37434f",
+          "#4c6075",
+          "#607c9c",
+          "#859ab0",
+          "#abb7c5",
+          "#cfd5db",
+          "#f1f2f4"
+        ]
+      },
+      "line-2": {
+        "role": "neutral",
+        "displayName": "Line Soft",
+        "canonical": "#dfe5ec",
+        "tonalRamp": [
+          "#20262c",
+          "#374250",
+          "#4b5f76",
+          "#5e7b9d",
+          "#8499b1",
+          "#aab7c6",
+          "#ced5dc",
+          "#f1f2f4"
+        ]
+      },
+      "rule-red": {
+        "role": "secondary",
+        "displayName": "Catalog Red",
+        "canonical": "#c8102e",
+        "tonalRamp": [
+          "#3a1219",
+          "#6e1927",
+          "#a81931",
+          "#e81336",
+          "#e65068",
+          "#e68a99",
+          "#ecbfc6",
+          "#f8edef"
+        ]
+      },
+      "rule-red-soft": {
+        "role": "secondary",
+        "displayName": "Drained Rule Pink",
+        "canonical": "#f3cbd2",
+        "tonalRamp": [
+          "#35181d",
+          "#63242f",
+          "#952c3f",
+          "#cc304b",
+          "#d26477",
+          "#da96a2",
+          "#e6c5ca",
+          "#f6eef0"
+        ]
+      },
+      "rule-blue": {
+        "role": "secondary",
+        "displayName": "Ruling Blue",
+        "canonical": "#c4dbef",
+        "tonalRamp": [
+          "#192734",
+          "#274560",
+          "#316490",
+          "#3683c5",
+          "#689ecd",
+          "#99bad7",
+          "#c6d6e4",
+          "#eff3f6"
+        ]
+      },
+      "tab-canary": {
+        "role": "tertiary",
+        "displayName": "Canary Tab (A)",
+        "canonical": "#ffd84d",
+        "tonalRamp": [
+          "#3e330f",
+          "#755f11",
+          "#b4900d",
+          "#fac401",
+          "#f3cc42",
+          "#eed682",
+          "#f0e4bb",
+          "#f9f6ec"
+        ]
+      },
+      "tab-sky": {
+        "role": "tertiary",
+        "displayName": "Sky Tab (B)",
+        "canonical": "#93c4ea",
+        "tonalRamp": [
+          "#162836",
+          "#224865",
+          "#286899",
+          "#2a88d2",
+          "#5fa2d6",
+          "#94bddc",
+          "#c3d7e7",
+          "#eef3f7"
+        ]
+      },
+      "tab-pink": {
+        "role": "tertiary",
+        "displayName": "Pink Tab (C)",
+        "canonical": "#ffa3c4",
+        "tonalRamp": [
+          "#3e0f20",
+          "#751135",
+          "#b40d49",
+          "#fa015a",
+          "#f34282",
+          "#ee82a9",
+          "#f0bbce",
+          "#f9ecf0"
+        ]
+      },
+      "tab-mint": {
+        "role": "tertiary",
+        "displayName": "Mint Tab (D)",
+        "canonical": "#86dbab",
+        "tonalRamp": [
+          "#1a3325",
+          "#285e40",
+          "#338e5b",
+          "#3ac175",
+          "#6bcb95",
+          "#9bd5b4",
+          "#c7e3d3",
+          "#eff6f2"
+        ]
+      },
+      "tab-apricot": {
+        "role": "tertiary",
+        "displayName": "Apricot Tab (E)",
+        "canonical": "#ffb784",
+        "tonalRamp": [
+          "#3e220f",
+          "#753b11",
+          "#b4520d",
+          "#fa6801",
+          "#f38c42",
+          "#eeaf82",
+          "#f0d1bb",
+          "#f9f1ec"
+        ]
+      },
+      "tab-lilac": {
+        "role": "tertiary",
+        "displayName": "Lilac Tab (F)",
+        "canonical": "#cbb9ff",
+        "tonalRamp": [
+          "#1b0f3e",
+          "#2b1175",
+          "#380db4",
+          "#4101fa",
+          "#7042f3",
+          "#9e82ee",
+          "#c8bbf0",
+          "#efecf9"
+        ]
+      },
+      "ok": {
+        "role": "status",
+        "displayName": "Verified Green",
+        "canonical": "#17703f",
+        "tonalRamp": [
+          "#173625",
+          "#226440",
+          "#29985b",
+          "#2bd075",
+          "#61d595",
+          "#95dbb4",
+          "#c4e7d3",
+          "#eef6f2"
+        ]
+      },
+      "ok-soft": {
+        "role": "status",
+        "displayName": "Verified Green Soft",
+        "canonical": "#e3f3ea",
+        "tonalRamp": [
+          "#1d3025",
+          "#2f5741",
+          "#3f825c",
+          "#4cb077",
+          "#77be96",
+          "#a2cdb5",
+          "#cbe0d4",
+          "#f0f5f2"
+        ]
+      },
+      "warn": {
+        "role": "status",
+        "displayName": "Warn Amber",
+        "canonical": "#8a5a00",
+        "tonalRamp": [
+          "#3e2d0f",
+          "#755311",
+          "#b47a0d",
+          "#faa401",
+          "#f3b642",
+          "#eec882",
+          "#f0ddbb",
+          "#f9f4ec"
+        ]
+      },
+      "warn-soft": {
+        "role": "status",
+        "displayName": "Warn Amber Soft",
+        "canonical": "#fff4d6",
+        "tonalRamp": [
+          "#3e310f",
+          "#755b11",
+          "#b4870d",
+          "#fab701",
+          "#f3c442",
+          "#eed182",
+          "#f0e1bb",
+          "#f9f5ec"
+        ]
+      },
+      "danger": {
+        "role": "status",
+        "displayName": "Danger Red",
+        "canonical": "#b0102a",
+        "tonalRamp": [
+          "#3a1319",
+          "#6d1a27",
+          "#a61b31",
+          "#e61638",
+          "#e45169",
+          "#e58b9a",
+          "#ebbfc6",
+          "#f8edef"
+        ]
+      },
+      "danger-soft": {
+        "role": "status",
+        "displayName": "Danger Red Soft",
+        "canonical": "#fde8eb",
+        "tonalRamp": [
+          "#3a1218",
+          "#6d1925",
+          "#a71a2e",
+          "#e61533",
+          "#e55166",
+          "#e58b98",
+          "#ebbfc5",
+          "#f8edee"
+        ]
+      },
+      "focus": {
+        "role": "status",
+        "displayName": "Focus Blue",
+        "canonical": "#1d64d8",
+        "tonalRamp": [
+          "#142238",
+          "#1d3a69",
+          "#2151a0",
+          "#1f67dd",
+          "#578bde",
+          "#8faee1",
+          "#c1d0e9",
+          "#edf1f7"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Live-console question prompt at 1200px and wider; 48px leading equals the rule pitch."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Question prompts on index cards and page titles; 36px leading equals the rule pitch."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Section titles, room-card names, option labels."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Default reading text."
+      },
+      "body-sm": {
+        "displayName": "Small Body",
+        "purpose": "Chat, insights, alerts, toasts."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Buttons, field labels, rail links, segmented controls."
+      },
+      "call-number": {
+        "displayName": "Call Number",
+        "purpose": "Courier Prime: Q n OF m, time left, stamps, LIVE pill. Typed catalog data only."
+      },
+      "count": {
+        "displayName": "Count",
+        "purpose": "Courier Prime tabular live answer counts."
+      },
+      "meta": {
+        "displayName": "Meta",
+        "purpose": "Courier Prime version, online count, timestamps, save state."
+      }
+    },
+    "shadows": [
+      {
+        "name": "lift",
+        "value": "0 1px 0 rgba(20, 34, 58, 0.14), 0 12px 28px -16px rgba(20, 34, 58, 0.45)",
+        "purpose": "Card stock at rest: index cards, toasts, live banner, dialogs."
+      },
+      {
+        "name": "lift-sm",
+        "value": "0 1px 0 rgba(20, 34, 58, 0.12), 0 4px 10px -6px rgba(20, 34, 58, 0.35)",
+        "purpose": "Drawer cards, room cards, chosen option and option hover."
+      },
+      {
+        "name": "focus-ring",
+        "value": "outline: 3px solid #1d64d8; outline-offset: 2px",
+        "purpose": "Global focus-visible ring."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Default easing for entries, lifts and presses."
+      },
+      {
+        "name": "card-pull",
+        "value": "0.6s ease-out; from translateY(28px) rotate(-0.6deg) opacity 0.4",
+        "purpose": "A new question card is pulled from the drawer."
+      },
+      {
+        "name": "stamp-in",
+        "value": "0.35s ease-out; from rotate(-3deg) scale(1.6) opacity 0",
+        "purpose": "The accepted stamp lands."
+      },
+      {
+        "name": "drain",
+        "value": "transform scaleX 0.25s linear",
+        "purpose": "Red header rule shrinks toward the left as time runs out."
+      },
+      {
+        "name": "meter",
+        "value": "transform 0.5s ease-out",
+        "purpose": "Option count meter grows."
+      },
+      {
+        "name": "toast-in",
+        "value": "0.45s ease-out; from translateY(16px) opacity 0",
+        "purpose": "Toast arrival."
+      },
+      {
+        "name": "press",
+        "value": "translateY(1px) 0.15s",
+        "purpose": "Button and option active state."
+      },
+      {
+        "name": "live-blink",
+        "value": "opacity 1 to 0.25, 1.6s ease-in-out infinite",
+        "purpose": "LIVE pill dot."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "animation-duration and transition-duration 0.01ms, 1 iteration",
+        "purpose": "prefers-reduced-motion: reduce collapses all motion; state still changes."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "mobile",
+        "value": "640px"
+      },
+      {
+        "name": "rail-collapse",
+        "value": "860px"
+      },
+      {
+        "name": "stack-columns",
+        "value": "1100px"
+      },
+      {
+        "name": "wide-console",
+        "value": "1200px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Cabinet-blue fill for the one main action (Start, End & show results).",
+      "html": "<button class=\"ds-btn ds-btn-primary\">End &amp; show results</button>",
+      "css": ".ds-btn{display:inline-flex;align-items:center;gap:8px;min-height:42px;padding:0 16px;border-radius:6px;border:1px solid #1f3a5f;font-family:'Atkinson Hyperlegible',system-ui,sans-serif;font-weight:700;font-size:.9375rem;cursor:pointer;transition:background .15s,transform .15s cubic-bezier(.16,1,.3,1)}.ds-btn:active{transform:translateY(1px)}.ds-btn:focus-visible{outline:3px solid #1d64d8;outline-offset:2px}.ds-btn-primary{background:#1f3a5f;color:#fff}.ds-btn-primary:hover{background:#2c4f7c}"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Default bordered paper button.",
+      "html": "<button class=\"ds-btn2\">Next question</button>",
+      "css": ".ds-btn2{display:inline-flex;align-items:center;min-height:42px;padding:0 16px;border-radius:6px;border:1px solid #1f3a5f;background:#fff;color:#1f3a5f;font-family:'Atkinson Hyperlegible',system-ui,sans-serif;font-weight:700;font-size:.9375rem;cursor:pointer;transition:background .15s}.ds-btn2:hover{background:#eef3f9}.ds-btn2:active{transform:translateY(1px)}.ds-btn2:focus-visible{outline:3px solid #1d64d8;outline-offset:2px}"
+    },
+    {
+      "name": "Danger Button",
+      "kind": "button",
+      "refersTo": "button-danger",
+      "description": "Destructive actions such as Cancel poll; danger red, never catalog red.",
+      "html": "<button class=\"ds-btn-danger\">Cancel poll</button>",
+      "css": ".ds-btn-danger{display:inline-flex;align-items:center;min-height:42px;padding:0 16px;border-radius:6px;border:1px solid #b0102a;background:#fff;color:#b0102a;font-family:'Atkinson Hyperlegible',system-ui,sans-serif;font-weight:700;font-size:.9375rem;cursor:pointer}.ds-btn-danger:hover{background:#fde8eb}.ds-btn-danger:focus-visible{outline:3px solid #1d64d8;outline-offset:2px}"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Labelled 44px field on paper.",
+      "html": "<label class=\"ds-field\"><span>Poll title</span><input class=\"ds-input\" placeholder=\"Photosynthesis check-in\"></label>",
+      "css": ".ds-field{display:grid;gap:6px;font-family:'Atkinson Hyperlegible',system-ui,sans-serif;color:#14223a}.ds-field>span{font-size:.9375rem;font-weight:700}.ds-input{min-height:44px;padding:10px 12px;border:1px solid #c9d3de;border-radius:6px;background:#fff;font:inherit;font-size:1.0625rem}.ds-input::placeholder{color:#56657b}.ds-input:focus{border-color:#1d64d8;outline:2px solid rgba(29,100,216,.3);outline-offset:0}"
+    },
+    {
+      "name": "Cabinet Rail",
+      "kind": "nav",
+      "refersTo": "rail",
+      "description": "Sticky cabinet-blue navigation; current item in cabinet-deep with a canary icon.",
+      "html": "<nav class=\"ds-rail\"><a class=\"ds-rail-link\" aria-current=\"page\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><rect x=\"3\" y=\"3\" width=\"7\" height=\"7\"/><rect x=\"14\" y=\"3\" width=\"7\" height=\"7\"/><rect x=\"3\" y=\"14\" width=\"7\" height=\"7\"/><rect x=\"14\" y=\"14\" width=\"7\" height=\"7\"/></svg>My room <span class=\"ds-rail-live\">LIVE</span></a><a class=\"ds-rail-link\" href=\"#\">Past polls</a></nav>",
+      "css": ".ds-rail{background:#1f3a5f;padding:16px;display:grid;gap:4px;width:236px;font-family:'Atkinson Hyperlegible',system-ui,sans-serif;}.ds-rail-link{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:6px;color:#b8c8dc;font-size:.9375rem;font-weight:700;text-decoration:none;cursor:pointer}.ds-rail-link:hover{background:#2c4f7c;color:#fff}.ds-rail-link:focus-visible{outline:3px solid #1d64d8;outline-offset:2px}.ds-rail-link[aria-current=page]{background:#172d4a;color:#fff}.ds-rail-link[aria-current=page] svg{color:#ffd84d}.ds-rail-live{margin-left:auto;font-family:'Courier Prime',ui-monospace,monospace;font-size:.8125rem;background:#c8102e;color:#fff;padding:0 6px;border-radius:3px}"
+    },
+    {
+      "name": "Index Card",
+      "kind": "card",
+      "refersTo": "index-card",
+      "description": "Ruled card stock with call number, draining red header rule and prompt on the ruling.",
+      "html": "<section class=\"ds-card\"><div class=\"ds-card-head\"><span class=\"ds-call\">Q 1 OF 3</span><span class=\"ds-call\">04:38 LEFT</span></div><div class=\"ds-rule\"><i style=\"transform:scaleX(.7)\"></i></div><h2 class=\"ds-prompt\">Where in the cell does photosynthesis take place?</h2></section>",
+      "css": ".ds-card{--pitch:36px;--ruled-from:99px;background-color:#fcfcfa;background-image:repeating-linear-gradient(to bottom,transparent 0 calc(var(--pitch) - 1px),#c4dbef calc(var(--pitch) - 1px) var(--pitch));background-position:0 var(--ruled-from);background-repeat:repeat-x;background-size:100% calc(100% - var(--ruled-from));border-radius:4px;box-shadow:0 1px 0 rgba(20,34,58,.14),0 12px 28px -16px rgba(20,34,58,.45);padding:24px 32px 32px;color:#14223a;font-family:'Atkinson Hyperlegible',system-ui,sans-serif;}.ds-card-head{display:flex;justify-content:space-between;align-items:baseline;min-height:40px}.ds-call{font-family:'Courier Prime',ui-monospace,monospace;font-weight:700;font-size:.9375rem;letter-spacing:.08em;color:#3f4f66}.ds-rule{position:relative;height:3px;margin:12px -32px 24px;background:#f3cbd2}.ds-rule>i{position:absolute;inset:0;background:#c8102e;transform-origin:left center;transition:transform .25s linear}.ds-prompt{margin:0;font-size:1.875rem;font-weight:700;line-height:36px;max-width:34ch}"
+    },
+    {
+      "name": "Option Tab",
+      "kind": "custom",
+      "refersTo": "option",
+      "description": "Option row with card-pack tab, letter disc and live count; shown chosen, pending and correct.",
+      "html": "<div class=\"ds-opts\"><button class=\"ds-opt\" style=\"--tab:#ffd84d\" data-state=\"chosen\"><span class=\"ds-opt-tab\">A</span><span class=\"ds-opt-letter\">A</span><span class=\"ds-opt-label\">Mitochondria</span><span class=\"ds-opt-count\">4</span></button><button class=\"ds-opt\" style=\"--tab:#93c4ea\" data-state=\"pending\"><span class=\"ds-opt-tab\">B</span><span class=\"ds-opt-letter\">B</span><span class=\"ds-opt-label\">Nucleus</span></button><div class=\"ds-opt\" style=\"--tab:#86dbab\" data-state=\"correct\"><span class=\"ds-opt-tab\">D</span><span class=\"ds-opt-letter\">D</span><span class=\"ds-opt-label\">Chloroplasts</span><span class=\"ds-flag\">&#10003; Correct</span></div></div>",
+      "css": ".ds-opts{display:grid;gap:24px;padding-top:20px;font-family:'Atkinson Hyperlegible',system-ui,sans-serif;color:#14223a}.ds-opt{position:relative;display:flex;align-items:center;gap:12px;min-height:60px;padding:12px 16px;background:#fff;border:1px solid #c9d3de;border-radius:0 6px 6px 6px;font:inherit;font-size:1.25rem;line-height:1.3;text-align:left;color:inherit;cursor:pointer;transition:border-color .15s,box-shadow .15s}.ds-opt:hover{border-color:#3f4f66;box-shadow:0 1px 0 rgba(20,34,58,.12),0 4px 10px -6px rgba(20,34,58,.35);}.ds-opt:focus-visible{outline:3px solid #1d64d8;outline-offset:2px}.ds-opt-tab{position:absolute;left:-1px;top:-19px;height:19px;min-width:46px;padding:0 10px;background:var(--tab);border-radius:5px 5px 0 0;font-family:'Courier Prime',ui-monospace,monospace;font-weight:700;font-size:.8125rem;line-height:19px}.ds-opt-letter{display:grid;place-items:center;width:32px;height:32px;border-radius:50%;border:2px solid #14223a;font-family:'Courier Prime',ui-monospace,monospace;font-weight:700;font-size:1.0625rem}.ds-opt-label{flex:1}.ds-opt-count{font-family:'Courier Prime',ui-monospace,monospace;font-weight:700}.ds-opt[data-state=chosen]{border:2px solid #14223a;padding:11px 15px;box-shadow:0 1px 0 rgba(20,34,58,.12),0 4px 10px -6px rgba(20,34,58,.35);}.ds-opt[data-state=chosen] .ds-opt-letter{background:#14223a;color:#fff}.ds-opt[data-state=pending]{border:2px dashed #3f4f66;padding:11px 15px}.ds-opt[data-state=correct]{border:2px solid #17703f;padding:11px 15px;background:#e3f3ea}.ds-flag{color:#17703f;font-size:.8125rem;font-weight:700}"
+    },
+    {
+      "name": "Stamps",
+      "kind": "chip",
+      "refersTo": "stamp-ok",
+      "description": "Rotated double-ruled rubber stamps: accepted, pending, closed, not answered.",
+      "html": "<div class=\"ds-stamps\"><span class=\"ds-stamp ds-ok\">Accepted 10:42:07</span><span class=\"ds-stamp ds-pend\">Sending</span><span class=\"ds-stamp ds-closed\">Time's up</span><span class=\"ds-stamp ds-muted\">Not answered</span></div>",
+      "css": ".ds-stamps{display:flex;flex-wrap:wrap;gap:16px;padding:8px}.ds-stamp{display:inline-flex;padding:6px 12px;border:3px double currentColor;border-radius:4px;font-family:'Courier Prime',ui-monospace,monospace;font-weight:700;font-size:.9375rem;letter-spacing:.08em;text-transform:uppercase;transform:rotate(-3deg);animation:ds-stamp-in .35s cubic-bezier(.16,1,.3,1) both}.ds-ok{color:#17703f;background:#e3f3ea}.ds-pend{color:#3f4f66;border-style:dashed;border-width:2px}.ds-closed{color:#b0102a;background:#fde8eb}.ds-muted{color:#3f4f66;background:#e6ebf0}@keyframes ds-stamp-in{from{transform:rotate(-3deg) scale(1.6);opacity:0}}@media (prefers-reduced-motion:reduce){.ds-stamp{animation:none}}"
+    },
+    {
+      "name": "Drawer Strip",
+      "kind": "custom",
+      "refersTo": "drawer-card",
+      "description": "Row of identical mini cards; the open one lifts, done ones fade and strike.",
+      "html": "<ol class=\"ds-drawer\"><li class=\"ds-dc\" data-state=\"done\"><b>Q1</b><span>Which organelle makes ATP?</span></li><li class=\"ds-dc\" data-state=\"open\"><b>Q2</b><span>Where does photosynthesis take place?</span></li><li class=\"ds-dc\"><b>Q3</b><span>What pigment absorbs light energy?</span></li></ol>",
+      "css": ".ds-drawer{display:flex;align-items:flex-end;gap:12px;list-style:none;margin:0;padding:24px 2px 8px;font-family:'Atkinson Hyperlegible',system-ui,sans-serif;}.ds-dc{flex:none;width:168px;height:92px;padding:12px 12px 8px;background:linear-gradient(#c8102e,#c8102e) top/100% 3px no-repeat,#fcfcfa;border-radius:3px;box-shadow:0 1px 0 rgba(20,34,58,.12),0 4px 10px -6px rgba(20,34,58,.35);font-size:.8125rem;color:#3f4f66;overflow:hidden;transition:transform .4s cubic-bezier(.16,1,.3,1),opacity .3s}.ds-dc b{display:block;font-family:'Courier Prime',ui-monospace,monospace;color:#14223a;font-size:.9375rem}.ds-dc[data-state=open]{transform:translateY(-14px);outline:2px solid #1f3a5f;color:#14223a}.ds-dc[data-state=done]{opacity:.6}.ds-dc[data-state=done] b{text-decoration:line-through}"
+    },
+    {
+      "name": "Toast",
+      "kind": "card",
+      "refersTo": "toast",
+      "description": "Card-stock notice with a 4px top rule drawn as a background layer; green for success.",
+      "html": "<div class=\"ds-toast\" data-tone=\"success\"><div class=\"ds-toast-title\">First correct: Priya</div><div>Answered B at 10:42:07</div></div>",
+      "css": ".ds-toast{max-width:380px;padding:16px 16px 12px;border-radius:4px;box-shadow:0 1px 0 rgba(20,34,58,.14),0 12px 28px -16px rgba(20,34,58,.45);background:linear-gradient(#c8102e,#c8102e) top/100% 4px no-repeat,#fcfcfa;font-family:'Atkinson Hyperlegible',system-ui,sans-serif;font-size:.9375rem;color:#14223a;animation:ds-toast-in .45s cubic-bezier(.16,1,.3,1) both}.ds-toast[data-tone=success]{background:linear-gradient(#17703f,#17703f) top/100% 4px no-repeat,#fcfcfa}.ds-toast-title{font-weight:700;font-size:1.0625rem}@keyframes ds-toast-in{from{transform:translateY(16px);opacity:0}}@media (prefers-reduced-motion:reduce){.ds-toast{animation:none}}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Card Catalog",
+    "overview": "Every question is an index card; the live poll is the card pulled out of the drawer. The app is a working library cabinet: a solid cabinet-blue navigation field, a cool blotter-grey desk, and white ruled card stock carrying a red header rule and pale-blue writing lines. The open card leads every live screen; everything around it (insights, chat, the drawer of upcoming cards) steps back one tone so the teacher and the student both read \"what is happening right now\" first.\n\nThe system is dense but calm, built for Operate mode: a teacher on a laptop running a class while talking, a student on a phone tapping an answer before time runs out. Colour works at field scale (the cabinet rail, the blotter ground) and at tab scale (six card-pack colours that identify options A to F). State is carried by form, the way a catalog clerk would mark a card: a solid border for chosen, a dashed one for pending, a double-ruled rubber stamp for accepted or closed, a strike-through for wrong or cancelled.\n\nIt refuses the category default of a grey dashboard with indigo bars and soft white cards. Typography is plain and highly legible (Atkinson Hyperlegible); the typewriter face (Courier Prime) is the catalog's own voice and is kept to what a clerk would type: call numbers, timers, counts, letters and stamps.",
+    "keyCharacteristics": [
+      "Ruled index card as the primary container, with a full-width red header rule that drains as time runs out.",
+      "Options A to F wear coloured card-pack tabs and a letter disc; colour never travels without its letter.",
+      "State by form: solid, dashed, double-ruled stamp, strike-through.",
+      "Cabinet-blue rail and blotter ground; no gradients, no glass, no decorative imagery.",
+      "Courier Prime only for typed catalog data; Atkinson Hyperlegible for everything people read."
+    ],
+    "rules": [
+      {
+        "name": "The One Red Rule",
+        "body": "Catalog red marks time, liveness and the card's header edge. It is not a general accent; never use it for buttons or emphasis text. Destructive actions use danger, not rule-red.",
+        "section": "colors"
+      },
+      {
+        "name": "The Letter-With-Colour Rule",
+        "body": "A tab colour never identifies an option on its own. Every tab carries its letter, and every option row repeats the letter in a disc.",
+        "section": "colors"
+      },
+      {
+        "name": "The Brand Tile Rule",
+        "body": "The maroon (#601800) \"yes OFFICER\" logo is used exactly as supplied, as the shell brand mark and the app icon. Maroon belongs to the logo tile only; it is not a UI colour.",
+        "section": "colors"
+      },
+      {
+        "name": "The Typed-Data Rule",
+        "body": "Courier Prime is for what a clerk types onto a card: call numbers, timers, counts, letters, stamps, status tags and metadata. Prompts, headings, body text, buttons and field labels are always Atkinson Hyperlegible.",
+        "section": "typography"
+      },
+      {
+        "name": "The Leading-Is-Ruling Rule",
+        "body": "A card prompt's line-height equals the card's rule pitch (36px, 30px compact, 48px wide console), so each line of the prompt sits on a ruled line.",
+        "section": "typography"
+      },
+      {
+        "name": "The Card-Stock-Lifts Rule",
+        "body": "Only card stock casts a shadow. Paper surfaces stay flat and bordered. Live focus is shown by tone: side panels in the console drop to a softer ground (#f5f7f9) and lighter border while the open card keeps full lift.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** put every question on an index card: call number, red header rule, prompt on the ruling, with prompt line-height equal to `--pitch`.",
+      "**Do** draw top red rules as full-width top-edge layers (a background gradient on toasts, banners and room cards; the drained bar on index cards).",
+      "**Do** pair every tab colour with its letter, and every correct/wrong state with an icon and a word as well as colour.",
+      "**Do** show state by form: solid for chosen, dashed for pending, double-ruled stamp for accepted or closed, strike-through for wrong, done or cancelled.",
+      "**Do** keep Courier Prime to call numbers, timers, counts, letters, stamps, tags and metadata.",
+      "**Do** label AI insights with the dashed AI label and verified results with the solid Verified label.",
+      "**Do** treat chat as ephemeral in the UI: no history loaders, and say plainly that it is not saved.",
+      "**Do** honour the reduced-motion collapse for any new animation."
+    ],
+    "donts": [
+      "**Don't** use side stripes (a coloured left or right border) on cards, alerts, list rows or messages.",
+      "**Don't** use Courier Prime for prompts, headings, body copy, buttons or field labels.",
+      "**Don't** signal correctness, acceptance or option identity by colour alone.",
+      "**Don't** use catalog red as a general accent or for destructive buttons.",
+      "**Don't** recolour, redraw or restyle the supplied maroon logo, or borrow its maroon for UI.",
+      "**Don't** add hard offset shadows, glows, gradients or glass; only card stock lifts.",
+      "**Don't** add uppercase tracked kicker labels above headings."
+    ]
+  }
+}
