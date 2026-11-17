@@ -15,6 +15,10 @@ os.environ["AUTH_RATE_LIMIT"] = "1000/minute"
 os.environ.setdefault("SECRET_KEY", "test-secret-key-test-secret-key-0123456789")
 os.environ.setdefault("INTERNAL_SHARED_SECRET", "test-internal-secret")
 os.environ["LLM_PROVIDER"] = "stub"
+# The TestClient speaks plain http://testserver, which never sends Secure cookies; the
+# dev .env enables them for the ngrok deployment, so force them off here.
+os.environ["COOKIE_SECURE"] = "false"
+os.environ["COOKIE_SAMESITE"] = "lax"
 
 import fakeredis  # noqa: E402
 import pytest  # noqa: E402

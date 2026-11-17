@@ -95,7 +95,7 @@ export function PollReportPage() {
               <LoadingBlock label="Loading results…" />
             )}
           </div>
-          <div style={{ position: 'sticky', top: 'var(--s-5)', display: 'grid', gap: 'var(--s-3)' }}>
+          <div className="report-side">
             <label className="field">
               <span>Insights for</span>
               <select className="select" value={questionFilter} onChange={(e) => changeFilter(e.target.value)}>

@@ -1,5 +1,5 @@
-"""Chat-batch analysis. `ClaudeChatAnalyzer` calls the Claude API with a strict
-JSON schema; `StubChatAnalyzer` is a deterministic local fallback used when no
+"""Chat-batch analysis. `GroqChatAnalyzer` (Groq) and `ClaudeChatAnalyzer` (Claude API)
+call an LLM with a strict JSON schema; `StubChatAnalyzer` is a deterministic local fallback used when no
 API key is configured (development, tests).
 
 The output schema deliberately has no field for quotes or excerpts: insights
@@ -12,6 +12,7 @@ import re
 from typing import Literal, Protocol
 
 import anthropic
+import httpx
 from pydantic import BaseModel, Field, ValidationError
 
 from api.config.settings import settings
@@ -136,7 +137,7 @@ class ClaudeChatAnalyzer:
     def analyze(self, context: AnalysisContext) -> AnalysisOutput:
         try:
             response = self.client.beta.messages.create(
-                model=settings.LLM_MODEL,
+                model=settings.llm_model,
                 max_tokens=settings.LLM_MAX_TOKENS,
                 system=SYSTEM_PROMPT,
                 messages=[{"role": "user", "content": context.model_dump_json(indent=1)}],
@@ -156,6 +157,67 @@ class ClaudeChatAnalyzer:
         if response.stop_reason == "max_tokens":
             raise PermanentLLMError("Analysis output was truncated")
         text = next((b.text for b in response.content if b.type == "text"), None)
+        if not text:
+            raise PermanentLLMError("No analysis output returned")
+        try:
+            return AnalysisOutput.model_validate(json.loads(text))
+        except (json.JSONDecodeError, ValidationError) as exc:
+            raise PermanentLLMError("Analysis output failed validation") from exc
+
+
+# ---------- Groq (OpenAI-compatible chat completions) ----------
+def _groq_schema(node):
+    """Groq's strict JSON-schema mode wants nullable fields as a type list, not anyOf."""
+    if isinstance(node, dict):
+        if set(node) == {"anyOf"} and len(node["anyOf"]) == 2 and {"type": "null"} in node["anyOf"]:
+            inner = next(n for n in node["anyOf"] if n != {"type": "null"})
+            return {**_groq_schema(inner), "type": [inner["type"], "null"]}
+        return {k: _groq_schema(v) for k, v in node.items()}
+    if isinstance(node, list):
+        return [_groq_schema(v) for v in node]
+    return node
+
+
+GROQ_OUTPUT_SCHEMA = _groq_schema(OUTPUT_SCHEMA)
+
+
+class GroqChatAnalyzer:
+    def __init__(self, client: httpx.Client | None = None):
+        self.client = client or httpx.Client(
+            base_url=settings.GROQ_BASE_URL,
+            headers={"Authorization": f"Bearer {settings.GROQ_API_KEY}"},
+            timeout=settings.GROQ_TIMEOUT_SECONDS,
+        )
+
+    def analyze(self, context: AnalysisContext) -> AnalysisOutput:
+        body = {
+            "model": settings.llm_model,
+            "messages": [
+                {"role": "system", "content": SYSTEM_PROMPT},
+                {"role": "user", "content": context.model_dump_json(indent=1)},
+            ],
+            "response_format": {
+                "type": "json_schema",
+                "json_schema": {"name": "chat_insights", "schema": GROQ_OUTPUT_SCHEMA, "strict": True},
+            },
+            "max_completion_tokens": min(settings.LLM_MAX_TOKENS, 8192),
+        }
+        if "gpt-oss" in settings.llm_model:
+            body["reasoning_effort"] = settings.LLM_EFFORT if settings.LLM_EFFORT in ("low", "medium", "high") else "low"
+        try:
+            response = self.client.post("/chat/completions", json=body)
+        except httpx.TransportError as exc:
+            raise TransientLLMError(type(exc).__name__) from exc
+        if response.status_code >= 500 or response.status_code in (408, 409, 429):
+            raise TransientLLMError(f"HTTP {response.status_code}")
+        if response.status_code >= 400:
+            detail = response.json().get("error", {}).get("message", "") if response.content else ""
+            raise PermanentLLMError(f"HTTP {response.status_code}: {detail[:200]}")
+
+        choice = (response.json().get("choices") or [{}])[0]
+        if choice.get("finish_reason") == "length":
+            raise PermanentLLMError("Analysis output was truncated")
+        text = (choice.get("message") or {}).get("content")
         if not text:
             raise PermanentLLMError("No analysis output returned")
         try:
@@ -234,4 +296,9 @@ class StubChatAnalyzer:
 
 
 def get_analyzer() -> ChatAnalyzer:
-    return ClaudeChatAnalyzer() if settings.use_real_llm else StubChatAnalyzer()
+    provider = settings.llm_provider
+    if provider == "groq":
+        return GroqChatAnalyzer()
+    if provider == "anthropic":
+        return ClaudeChatAnalyzer()
+    return StubChatAnalyzer()

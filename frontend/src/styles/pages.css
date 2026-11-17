@@ -157,6 +157,21 @@
   max-height: 760px;
 }
 
+/* results page: filter + insights stay one screen tall; the insight list scrolls inside */
+.report-side {
+  position: sticky;
+  top: var(--s-5);
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: var(--s-3);
+  max-height: calc(100vh - 2 * var(--s-5));
+  min-height: 0;
+}
+
+.report-side > .panel {
+  min-height: 0;
+}
+
 .live-banner {
   display: flex;
   align-items: center;
@@ -197,6 +212,15 @@
   .room-grid .chat {
     position: static;
     height: 460px;
+  }
+
+  .report-side {
+    position: static;
+    max-height: none;
+  }
+
+  .report-side .panel-body {
+    max-height: 480px;
   }
 }
 

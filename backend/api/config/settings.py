@@ -5,7 +5,7 @@ Every tunable lives here so nothing is hardcoded elsewhere in the codebase.
 
 from functools import lru_cache
 
-from pydantic import Field, field_validator
+from pydantic import AliasChoices, Field, field_validator
 from typing import Annotated
 
 from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
@@ -58,9 +58,14 @@ class Settings(BaseSettings):
     WS_SEND_TIMEOUT_SECONDS: float = 2.0
 
     # --- LLM ---
-    LLM_PROVIDER: str = "auto"  # auto | anthropic | stub
+    LLM_PROVIDER: str = "auto"  # auto | groq | anthropic | stub
     ANTHROPIC_API_KEY: str | None = None
-    LLM_MODEL: str = "claude-opus-5-5"
+    # Groq (groq.com, OpenAI-compatible). GROK_API_KEY is accepted as a common misspelling.
+    GROQ_API_KEY: str | None = Field(None, validation_alias=AliasChoices("GROQ_API_KEY", "GROK_API_KEY"))
+    GROQ_BASE_URL: str = "https://api.groq.com/openai/v1"
+    GROQ_TIMEOUT_SECONDS: float = 60.0
+    # Empty means "the provider's default": claude-opus-5-5 (anthropic) or openai/gpt-oss-120b (groq).
+    LLM_MODEL: str = ""
     LLM_EFFORT: str = "low"
     LLM_MAX_TOKENS: int = 16000
 
@@ -78,12 +83,25 @@ class Settings(BaseSettings):
         return value
 
     @property
+    def llm_provider(self) -> str:
+        """The analyzer to use: an explicit LLM_PROVIDER, or in "auto" whichever key is set."""
+        if self.LLM_PROVIDER in ("groq", "anthropic", "stub"):
+            return self.LLM_PROVIDER
+        if self.GROQ_API_KEY:
+            return "groq"
+        if self.ANTHROPIC_API_KEY:
+            return "anthropic"
+        return "stub"
+
+    @property
     def use_real_llm(self) -> bool:
-        if self.LLM_PROVIDER == "anthropic":
-            return True
-        if self.LLM_PROVIDER == "stub":
-            return False
-        return bool(self.ANTHROPIC_API_KEY)
+        return self.llm_provider != "stub"
+
+    @property
+    def llm_model(self) -> str:
+        if self.LLM_MODEL:
+            return self.LLM_MODEL
+        return "openai/gpt-oss-120b" if self.llm_provider == "groq" else "claude-opus-5-5"
 
 
 @lru_cache
