@@ -40,7 +40,7 @@ Official MCQ answers and AI chat analysis are deliberately separate pipelines: a
 
 ## Brand Commitments
 
-- Official logo (supplied by the product owner, 2026-11-17): white "yes" with a long slanted y descender over condensed "OFFICER", on a maroon `#601800` square. Source file: `frontend/src/assets/brand/yes-officer-logo.png`. Use it as supplied, never redrawn or recoloured; square derivatives are padded on the same maroon ground. It is the app icon (favicon, touch icon) and the brand mark in the app shell.
+- App mark (changed by the product owner, 2026-11-25): the original "yes OFFICER" logo was retired. The app uses a generic mark instead: the lucide `Vote` (ballot box) icon in ink on a canary `#ffd84d` tile (`frontend/src/components/BrandMark.jsx`, `frontend/public/icon.svg` and its PNG renders). The wordmark is the plain text "Yes Officer".
 
 ## Evidence on Hand
 

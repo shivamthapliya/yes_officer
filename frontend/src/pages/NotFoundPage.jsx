@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 
 import { BrandMark } from '../components/BrandMark'
+import { SiteFooter } from '../components/SiteFooter'
 
 export function NotFoundPage() {
   return (
@@ -17,6 +18,7 @@ export function NotFoundPage() {
         <p className="muted" style={{ margin: 'var(--s-3) 0 var(--s-5)' }}>The page may have moved, or the link is incomplete.</p>
         <Link to="/" className="btn btn-primary">Back to your room</Link>
       </section>
+      <SiteFooter className="site-footer-auth" />
     </div>
   )
 }

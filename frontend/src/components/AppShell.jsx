@@ -1,8 +1,13 @@
 import { BookOpen, DoorOpen, History, LayoutGrid, LogOut, Radio } from 'lucide-react'
-import { NavLink, Outlet } from 'react-router-dom'
+import { matchPath, NavLink, Outlet, useLocation } from 'react-router-dom'
 
 import { useAuth } from '../context/AuthContext'
 import { BrandMark } from './BrandMark'
+import { SiteFooter } from './SiteFooter'
+import { TopBar } from './TopBar'
+
+// Live screens keep every pixel for the poll, so they get no footer.
+const NO_FOOTER = ['/teach/polls/:id/live', '/rooms/:id']
 
 function RailLink({ to, icon: Icon, label, short, end, badge }) {
   return (
@@ -26,6 +31,8 @@ function RailLink({ to, icon: Icon, label, short, end, badge }) {
 export function AppShell({ liveBadge = null }) {
   const { user, logout } = useAuth()
   const isTeacher = user?.role === 'TEACHER'
+  const { pathname } = useLocation()
+  const showFooter = !NO_FOOTER.some((p) => matchPath(p, pathname))
 
   return (
     <div className="shell">
@@ -54,9 +61,13 @@ export function AppShell({ liveBadge = null }) {
           </button>
         </div>
       </nav>
-      <main className="main" id="main">
-        <Outlet />
-      </main>
+      <div className="shell-col">
+        <TopBar />
+        <main className="main" id="main">
+          <Outlet />
+        </main>
+        {showFooter && <SiteFooter />}
+      </div>
     </div>
   )
 }

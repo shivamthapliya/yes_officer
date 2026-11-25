@@ -1,5 +1,6 @@
-import { ArrowDown, ArrowUp, Check, Play, Plus, Trash2, X } from 'lucide-react'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { ArrowDown, ArrowUp, Check, Minus, Play, Plus, Trash2, X } from 'lucide-react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { flushSync } from 'react-dom'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { pollsApi } from '../../api/services'
@@ -19,12 +20,14 @@ const same = (a, b) => JSON.stringify(a) === JSON.stringify(b)
 
 function readiness(local) {
   const filled = local.options.filter((o) => o.label.trim())
-  const problems = []
-  if (!local.prompt.trim()) problems.push('Write the question')
-  if (filled.length < MIN_OPTIONS) problems.push(`Add at least ${MIN_OPTIONS} options`)
-  if (local.options.filter((o) => o.is_correct).length !== 1) problems.push('Mark the correct answer')
-  return problems
+  return [
+    { label: 'Write the question', done: Boolean(local.prompt.trim()) },
+    { label: `Add at least ${MIN_OPTIONS} options`, done: filled.length >= MIN_OPTIONS },
+    { label: 'Mark the correct answer', done: local.options.filter((o) => o.is_correct).length === 1 },
+  ]
 }
+
+const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 function QuestionEditor({ question, index, total, onSave, onDelete, onMove, onDirtyChange, onDiscardNew }) {
   const [local, setLocal] = useState(() => toLocal(question))
@@ -32,7 +35,40 @@ function QuestionEditor({ question, index, total, onSave, onDelete, onMove, onDi
   const [error, setError] = useState(null)
   const baseline = useRef(toLocal(question))
   const dirty = !question || !same(local, baseline.current)
-  const problems = readiness(local)
+  const checks = readiness(local)
+  const doneCount = checks.filter((c) => c.done).length
+  const ready = doneCount === checks.length
+  const [newOption, setNewOption] = useState(null)
+  const [leaving, setLeaving] = useState(null)
+
+  // Fade and slide the row out, fold its height away, then drop it from the list.
+  const removeOption = (i, rowEl) => {
+    if (leaving !== null) return
+    const drop = () => {
+      setLocal((s) => ({ ...s, options: s.options.filter((_, j) => j !== i) }))
+      setLeaving(null)
+    }
+    if (prefersReducedMotion() || !rowEl) return drop()
+    setLeaving(i)
+    const h = rowEl.getBoundingClientRect().height
+    rowEl.style.overflow = 'hidden'
+    rowEl
+      .animate(
+        [
+          { opacity: 1, transform: 'none', filter: 'none', height: `${h}px` },
+          { opacity: 0, transform: 'translateX(24px) scale(0.98)', filter: 'blur(2px)', height: `${h}px`, offset: 0.55 },
+          { opacity: 0, transform: 'translateX(24px) scale(0.98)', filter: 'blur(2px)', height: '0px', paddingTop: '0px', paddingBottom: '0px' },
+        ],
+        { duration: 340, easing: 'cubic-bezier(0.4, 0, 0.2, 1)', fill: 'forwards' },
+      )
+      .finished.then(() => {
+        // Remove the option from the DOM first, then clear the animation in the same frame.
+        // Rows are keyed by index, so this element may now hold the next option.
+        flushSync(drop)
+        rowEl.getAnimations().forEach((a) => a.cancel())
+        rowEl.style.overflow = ''
+      })
+  }
 
   useEffect(() => {
     onDirtyChange(dirty)
@@ -69,7 +105,12 @@ function QuestionEditor({ question, index, total, onSave, onDelete, onMove, onDi
   }
 
   return (
-    <section className="index-card q-editor" aria-label={`Question ${index + 1}`}>
+    <section
+      className={`index-card q-editor${question ? '' : ' card-enter'}`}
+      data-qid={question?.id}
+      data-ready={ready || undefined}
+      aria-label={`Question ${index + 1}`}
+    >
       <div className="card-head">
         <span className="call-no">Q {index + 1} OF {total}</span>
         <span style={{ display: 'flex', gap: 4 }}>
@@ -93,7 +134,9 @@ function QuestionEditor({ question, index, total, onSave, onDelete, onMove, onDi
           </button>
         </span>
       </div>
-      <div className="card-rule" aria-hidden="true"><i /></div>
+      <div className="card-rule" aria-hidden="true">
+        <i style={{ transform: `scaleX(${doneCount / checks.length})` }} />
+      </div>
       <label className="sr-only" htmlFor={`prompt-${index}`}>Question text</label>
       <textarea
         id={`prompt-${index}`}
@@ -105,7 +148,12 @@ function QuestionEditor({ question, index, total, onSave, onDelete, onMove, onDi
       />
       <div style={{ marginTop: 'var(--s-4)' }} role="group" aria-label="Options">
         {local.options.map((o, i) => (
-          <div className="opt-edit" key={i} style={{ '--tab': `var(--tab-${tabFor(i)})` }}>
+          <div
+            className={`opt-edit${newOption === i ? ' opt-new' : ''}`}
+            key={i}
+            style={{ '--tab': `var(--tab-${tabFor(i)})` }}
+            onAnimationEnd={(e) => e.target === e.currentTarget && newOption === i && setNewOption(null)}
+          >
             <span className="tab-dot" aria-hidden="true" />
             <span className="opt-letter" aria-hidden="true">{letterFor(i)}</span>
             <input
@@ -122,10 +170,10 @@ function QuestionEditor({ question, index, total, onSave, onDelete, onMove, onDi
               </button>
               <button
                 type="button"
-                className="btn btn-ghost btn-icon btn-sm"
+                className="btn btn-ghost btn-icon btn-sm opt-remove"
                 aria-label={`Remove option ${letterFor(i)}`}
-                disabled={local.options.length <= MIN_OPTIONS}
-                onClick={() => setLocal({ ...local, options: local.options.filter((_, j) => j !== i) })}
+                disabled={local.options.length <= MIN_OPTIONS || leaving !== null}
+                onClick={(e) => removeOption(i, e.currentTarget.closest('.opt-edit'))}
               >
                 <X size={16} aria-hidden="true" />
               </button>
@@ -138,15 +186,25 @@ function QuestionEditor({ question, index, total, onSave, onDelete, onMove, onDi
           type="button"
           className="btn btn-sm"
           disabled={local.options.length >= MAX_OPTIONS}
-          onClick={() => setLocal({ ...local, options: [...local.options, { label: '', is_correct: false }] })}
+          onClick={() => {
+            setNewOption(local.options.length)
+            setLocal({ ...local, options: [...local.options, { label: '', is_correct: false }] })
+          }}
         >
           <Plus size={15} aria-hidden="true" /> Add option
         </button>
         <span style={{ flex: 1 }} />
-        {problems.length > 0 ? (
-          <span className="save-state">{problems.join(' · ')}</span>
+        {ready ? (
+          <span key={dirty ? 'dirty' : 'saved'} className="save-state save-state-in">{dirty ? 'Unsaved changes' : 'Saved'}</span>
         ) : (
-          <span className="save-state">{dirty ? 'Unsaved changes' : 'Saved'}</span>
+          <span className="save-state checklist">
+            {checks.map((c) => (
+              <span key={c.label} className="check-item" data-done={c.done || undefined}>
+                {c.label}
+                {c.done && <span className="sr-only"> (done)</span>}
+              </span>
+            ))}
+          </span>
         )}
         <button type="button" className="btn btn-primary btn-sm" onClick={save} disabled={busy || !dirty || !local.prompt.trim()}>
           {busy && <span className="spinner" aria-hidden="true" />}
@@ -155,6 +213,46 @@ function QuestionEditor({ question, index, total, onSave, onDelete, onMove, onDi
       </div>
       {error && <div style={{ marginTop: 'var(--s-3)' }}><ErrorAlert error={error} /></div>}
     </section>
+  )
+}
+
+const TIME_MIN = 10
+const TIME_MAX = 300
+const TIME_STEP = 10
+const TIME_PRESETS = [
+  { seconds: 30, label: '30s' },
+  { seconds: 60, label: '1m' },
+  { seconds: 120, label: '2m' },
+  { seconds: 180, label: '3m' },
+  { seconds: 300, label: '5m' },
+]
+
+function TimeLimitPicker({ value, onChange }) {
+  const set = (v) => onChange(Math.min(TIME_MAX, Math.max(TIME_MIN, v)))
+  const m = Math.floor(value / 60)
+  const s = String(value % 60).padStart(2, '0')
+
+  return (
+    <div className="time-picker" role="group" aria-labelledby="time-label" aria-describedby="time-help">
+      <div className="time-stepper">
+        <button type="button" className="time-step" aria-label="10 seconds less" disabled={value <= TIME_MIN} onClick={() => set(value - TIME_STEP)}>
+          <Minus size={16} aria-hidden="true" />
+        </button>
+        <output className="time-readout" aria-live="polite" aria-label={formatDuration(value)}>
+          <span key={value} className="time-digits">{m}:{s}</span>
+        </output>
+        <button type="button" className="time-step" aria-label="10 seconds more" disabled={value >= TIME_MAX} onClick={() => set(value + TIME_STEP)}>
+          <Plus size={16} aria-hidden="true" />
+        </button>
+      </div>
+      <div className="time-presets">
+        {TIME_PRESETS.map((p) => (
+          <button key={p.seconds} type="button" aria-pressed={value === p.seconds} aria-label={formatDuration(p.seconds)} onClick={() => set(p.seconds)}>
+            {p.label}
+          </button>
+        ))}
+      </div>
+    </div>
   )
 }
 
@@ -170,6 +268,30 @@ export function PollEditorPage() {
   const [confirmDelete, setConfirmDelete] = useState(false)
   const [starting, setStarting] = useState(false)
   const draftSeq = useRef(0)
+
+  // FLIP: capture card positions before a reorder or delete, then slide them from there.
+  const flipFrom = useRef(null)
+  const snapshotCards = () => {
+    flipFrom.current = new Map(
+      [...document.querySelectorAll('.editor [data-qid]')].map((el) => [el.dataset.qid, el.getBoundingClientRect().top]),
+    )
+  }
+  useLayoutEffect(() => {
+    const from = flipFrom.current
+    if (!from) return
+    flipFrom.current = null
+    if (prefersReducedMotion()) return
+    document.querySelectorAll('.editor [data-qid]').forEach((el) => {
+      const before = from.get(el.dataset.qid)
+      if (before === undefined) return
+      const dy = before - el.getBoundingClientRect().top
+      if (Math.abs(dy) < 1) return
+      el.animate([{ transform: `translateY(${dy}px)` }, { transform: 'none' }], {
+        duration: 480,
+        easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
+      })
+    })
+  }, [poll])
 
   const apply = useCallback((detail) => {
     setPoll(detail)
@@ -189,8 +311,13 @@ export function PollEditorPage() {
       .catch(setError)
   }, [pollId, navigate, apply])
 
+  const metaRef = useRef(meta)
+  metaRef.current = meta
+  const timeSaveTimer = useRef(null)
+  useEffect(() => () => clearTimeout(timeSaveTimer.current), [])
+
   const saveMeta = async (patch) => {
-    const next = { ...meta, ...patch }
+    const next = { ...metaRef.current, ...patch }
     setMeta(next)
     if (!next.title.trim()) return
     setMetaState('saving')
@@ -201,6 +328,11 @@ export function PollEditorPage() {
       setError(err)
       setMetaState('error')
     }
+  }
+
+  const scheduleTimeSave = (seconds) => {
+    clearTimeout(timeSaveTimer.current)
+    timeSaveTimer.current = setTimeout(() => saveMeta({ time_limit_seconds: seconds }), 450)
   }
 
   const markDirty = useCallback((key) => (isDirty) => setDirtyMap((m) => (m[key] === isDirty ? m : { ...m, [key]: isDirty })), [])
@@ -219,7 +351,9 @@ export function PollEditorPage() {
 
   const deleteQuestion = async (questionId) => {
     try {
-      apply(await pollsApi.removeQuestion(questionId))
+      const detail = await pollsApi.removeQuestion(questionId)
+      snapshotCards()
+      apply(detail)
     } catch (err) {
       setError(err)
     }
@@ -230,7 +364,9 @@ export function PollEditorPage() {
     const [item] = ids.splice(index, 1)
     ids.splice(index + delta, 0, item)
     try {
-      apply(await pollsApi.reorder(pollId, ids))
+      const detail = await pollsApi.reorder(pollId, ids)
+      snapshotCards()
+      apply(detail)
     } catch (err) {
       setError(err)
     }
@@ -294,23 +430,17 @@ export function PollEditorPage() {
             onBlur={() => meta.title !== poll.title && saveMeta({})}
           />
         </label>
-        <label className="field">
-          <span>Time limit: <span className="num">{formatDuration(meta.time_limit_seconds)}</span></span>
-          <span className="time-limit">
-            <input
-              type="range"
-              min={10}
-              max={300}
-              step={10}
-              value={meta.time_limit_seconds}
-              aria-describedby="time-help"
-              onChange={(e) => setMeta({ ...meta, time_limit_seconds: Number(e.target.value) })}
-              onPointerUp={() => saveMeta({})}
-              onKeyUp={() => saveMeta({})}
-            />
-          </span>
+        <div className="field">
+          <span id="time-label">Time limit</span>
+          <TimeLimitPicker
+            value={meta.time_limit_seconds}
+            onChange={(v) => {
+              setMeta((m) => ({ ...m, time_limit_seconds: v }))
+              scheduleTimeSave(v)
+            }}
+          />
           <small id="time-help">For the whole poll, up to 5 minutes. {metaState === 'saving' ? 'Saving…' : metaState === 'saved' ? 'Saved.' : ''}</small>
-        </label>
+        </div>
       </div>
 
       {poll.questions.map((q, i) => (

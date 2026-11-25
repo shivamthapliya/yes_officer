@@ -28,9 +28,16 @@
   gap: var(--s-7);
 }
 
-.auth-sample .index-card {
+.auth-tilt {
   width: min(460px, 100%);
-  transform: rotate(-1.2deg);
+  transform: perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) rotate(-1.2deg);
+  transition: transform 0.6s var(--ease-out);
+  will-change: transform;
+}
+
+.auth-sample .index-card {
+  width: 100%;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.18), 0 30px 60px -24px rgba(5, 14, 28, 0.75);
 }
 
 .auth-stamp {
@@ -55,8 +62,10 @@
 
 .auth-main {
   display: grid;
+  grid-template-rows: 1fr auto;
   place-items: center;
-  padding: var(--s-6) var(--s-5);
+  gap: var(--s-6);
+  padding: var(--s-6) var(--s-5) var(--s-4);
 }
 
 .auth-form {
@@ -128,8 +137,8 @@
   }
 
   .auth-brand .brand-logo {
-    width: 56px;
-    height: 56px;
+    width: 56px !important;
+    height: 56px !important;
   }
 
   .auth-sample,
@@ -233,7 +242,7 @@
 
 .editor-meta {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 220px;
+  grid-template-columns: minmax(0, 1fr) 280px;
   gap: var(--s-4);
   align-items: end;
 }
@@ -315,15 +324,121 @@
   color: var(--ink-3);
 }
 
-.time-limit {
-  display: flex;
-  align-items: center;
-  gap: var(--s-3);
+.time-picker {
+  display: grid;
+  gap: var(--s-2);
 }
 
-.time-limit input[type='range'] {
-  flex: 1;
-  accent-color: var(--cabinet);
+.time-stepper {
+  display: grid;
+  grid-template-columns: 44px 1fr 44px;
+  align-items: stretch;
+  height: 46px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: border-color 0.15s, box-shadow 0.2s var(--ease-out);
+}
+
+.time-stepper:focus-within {
+  border-color: var(--cabinet);
+  box-shadow: 0 0 0 3px rgba(31, 58, 95, 0.14);
+}
+
+.time-step {
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  color: var(--cabinet);
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s var(--ease-out);
+}
+
+.time-step:first-child {
+  border-right: 1px solid var(--line-2);
+}
+
+.time-step:last-child {
+  border-left: 1px solid var(--line-2);
+}
+
+.time-step:hover:not(:disabled) {
+  background: var(--blotter);
+}
+
+.time-step:active:not(:disabled) {
+  transform: scale(0.88);
+}
+
+.time-step:disabled {
+  color: var(--line);
+  cursor: not-allowed;
+}
+
+.time-readout {
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  font-family: var(--font-num);
+  font-size: var(--t-xl);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+.time-digits {
+  display: block;
+  animation: time-tick 0.35s var(--ease-out) both;
+}
+
+@keyframes time-tick {
+  from {
+    transform: translateY(45%);
+    opacity: 0.25;
+    filter: blur(2px);
+  }
+  to {
+    transform: none;
+    opacity: 1;
+    filter: none;
+  }
+}
+
+.time-presets {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--s-1);
+}
+
+.time-presets button {
+  height: 32px;
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+  background: transparent;
+  font-family: var(--font-num);
+  font-size: var(--t-sm);
+  font-weight: 700;
+  color: var(--ink-2);
+  cursor: pointer;
+  transition: background 0.2s var(--ease-out), color 0.2s, border-color 0.2s, transform 0.15s var(--ease-out);
+}
+
+.time-presets button:hover {
+  border-color: var(--cabinet);
+  color: var(--cabinet);
+}
+
+.time-presets button:active {
+  transform: scale(0.94);
+}
+
+.time-presets button[aria-pressed='true'] {
+  border-style: solid;
+  border-color: var(--cabinet);
+  background: var(--cabinet);
+  color: #fff;
 }
 
 @media (max-width: 640px) {
@@ -346,7 +461,7 @@
   grid-template-columns: minmax(0, 1fr) 360px;
   grid-template-rows: auto minmax(0, 1fr);
   gap: var(--s-4) var(--s-5);
-  min-height: calc(100vh - var(--s-5) - var(--s-7));
+  min-height: calc(100vh - var(--topbar-h) - var(--s-5) - var(--s-7));
 }
 
 .console-top {
@@ -370,7 +485,7 @@
 }
 
 .console {
-  min-height: calc(100vh - var(--s-5) - var(--s-7));
+  min-height: calc(100vh - var(--topbar-h) - var(--s-5) - var(--s-7));
 }
 
 .console-main {
@@ -648,5 +763,260 @@ p.review-summary {
 
   .console-main .opt {
     font-size: var(--t-xl);
+  }
+}
+
+/* ---------------------------------------------------------------- editor motion */
+/* The red rule fills as the card becomes ready: the inverse of the live drain. */
+.q-editor .card-rule > i {
+  transition: transform 0.6s var(--ease-out);
+}
+
+.q-editor[data-ready] .card-rule > i {
+  animation: rule-ready 0.6s var(--ease-out);
+}
+
+@keyframes rule-ready {
+  40% {
+    filter: brightness(1.25) saturate(1.2);
+    box-shadow: 0 3px 8px -2px rgba(200, 16, 46, 0.45);
+  }
+}
+
+/* Requirements stay listed and get struck through as they are met. */
+.checklist {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 2px 0;
+}
+
+.check-item {
+  background: linear-gradient(currentColor, currentColor) no-repeat 0 55% / 0% 1px;
+  transition: background-size 0.35s var(--ease-out), color 0.25s;
+}
+
+.check-item + .check-item::before {
+  content: '·';
+  display: inline-block;
+  margin: 0 0.6em;
+  color: var(--ink-3);
+}
+
+.check-item[data-done] {
+  color: var(--ink-3);
+  background-size: 100% 1px;
+}
+
+.check-item:not([data-done]) {
+  color: var(--ink-2);
+}
+
+.save-state-in {
+  animation: fade-up 0.3s var(--ease-out) both;
+}
+
+@keyframes fade-up {
+  from {
+    transform: translateY(4px);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+/* A new option slides in and its card-pack tab rises out of the card. */
+.opt-new {
+  animation: fade-up 0.35s var(--ease-out) both;
+}
+
+.opt-new .tab-dot {
+  transform-origin: bottom center;
+  animation: tab-rise 0.45s 0.08s var(--ease-out) both;
+}
+
+@keyframes tab-rise {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: none;
+  }
+}
+
+/* Marking the answer lands like a stamp. */
+.correct-toggle {
+  transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.15s var(--ease-out);
+}
+
+.correct-toggle:hover:not([aria-pressed='true']) {
+  border-color: var(--ok);
+  color: var(--ok);
+}
+
+.correct-toggle:active {
+  transform: scale(0.95);
+}
+
+.correct-toggle[aria-pressed='true'] {
+  animation: correct-stamp 0.35s var(--ease-out);
+}
+
+.correct-toggle[aria-pressed='true'] svg {
+  animation: check-pop 0.4s 0.05s var(--ease-out) both;
+}
+
+@keyframes correct-stamp {
+  from {
+    transform: scale(1.12) rotate(-2deg);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes check-pop {
+  from {
+    transform: scale(0) rotate(-30deg);
+  }
+  to {
+    transform: none;
+  }
+}
+
+/* Removing an option is destructive: the cross warms to red on hover. */
+.btn.opt-remove {
+  transition: background 0.15s, color 0.15s, transform 0.15s var(--ease-out);
+}
+
+.btn.opt-remove:hover:not(:disabled) {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+.btn.opt-remove svg {
+  transition: transform 0.25s var(--ease-out);
+}
+
+.btn.opt-remove:hover:not(:disabled) svg {
+  transform: rotate(90deg);
+}
+
+.btn.opt-remove:focus-visible {
+  color: var(--danger);
+}
+
+/* ---------------------------------------------------------------- sign-in motion */
+.auth-side {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.auth-scene {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  animation: scene-in 1.2s ease-out both;
+}
+
+.auth-scene canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* a pool of cabinet blue behind the sample card keeps the drifting cards from competing with it */
+.auth-scene::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 58% 62% at 50% 56%, rgba(31, 58, 95, 0.9), rgba(31, 58, 95, 0.35) 72%, rgba(31, 58, 95, 0));
+  pointer-events: none;
+}
+
+@keyframes scene-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.auth-brand,
+.auth-sample {
+  position: relative;
+  z-index: 1;
+}
+
+.auth-brand .brand-logo {
+  animation: brand-pop 0.7s 0.2s var(--ease-out) both;
+}
+
+@keyframes brand-pop {
+  from {
+    transform: scale(0.6) rotate(-8deg);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+.auth-card-leave {
+  animation: card-leave 0.5s cubic-bezier(0.55, 0, 0.75, 0.2) both;
+}
+
+@keyframes card-leave {
+  to {
+    transform: translateY(-36px) rotate(1.5deg) scale(0.97);
+    opacity: 0;
+    filter: blur(3px);
+  }
+}
+
+.auth-line {
+  text-shadow: 0 2px 14px rgba(10, 22, 40, 0.85);
+}
+
+.auth-line > span {
+  animation: line-reveal 0.9s var(--ease-out) both;
+  animation-delay: 0.6s;
+}
+
+.auth-line > span + span {
+  animation-delay: 0.78s;
+}
+
+@keyframes line-reveal {
+  from {
+    clip-path: inset(0 0 100% 0);
+    transform: translateY(60%);
+    opacity: 0;
+  }
+  to {
+    clip-path: inset(0 0 -10% 0);
+    transform: none;
+    opacity: 1;
+  }
+}
+
+/* the form arrives one field at a time */
+.auth-form > h1,
+.auth-form .stack > * {
+  animation: fade-up 0.5s var(--ease-out) both;
+}
+
+.auth-form > h1 { animation-delay: 0.1s; }
+.auth-form .stack > :nth-child(1) { animation-delay: 0.18s; }
+.auth-form .stack > :nth-child(2) { animation-delay: 0.24s; }
+.auth-form .stack > :nth-child(3) { animation-delay: 0.3s; }
+.auth-form .stack > :nth-child(4) { animation-delay: 0.36s; }
+.auth-form .stack > :nth-child(5) { animation-delay: 0.42s; }
+.auth-form .stack > :nth-child(n + 6) { animation-delay: 0.48s; }
+
+@media (max-width: 860px) {
+  .auth-scene {
+    display: none;
   }
 }
